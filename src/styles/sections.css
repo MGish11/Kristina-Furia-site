@@ -1,0 +1,831 @@
+/* ─────────────────────────────────────────────────────────────
+   Section layout. Tokens and type live in global.css.
+   ───────────────────────────────────────────────────────────── */
+
+/* ————— Nav ——————————————————————————————————————————————————— */
+
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  padding-inline: var(--gutter);
+  transition:
+    background-color 0.5s ease,
+    box-shadow 0.5s ease;
+}
+
+.nav--stuck {
+  background: rgba(241, 232, 220, 0.85);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 var(--deep-15);
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  height: 4.5rem;
+}
+
+.nav__name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  letter-spacing: var(--track);
+  color: var(--deep);
+  margin-right: auto;
+}
+
+/* The illustration's own ground is cream, so it sits on the nav without
+   a cutout. mix-blend-mode: multiply drops the last of the seam once the
+   nav picks up its translucent background on scroll. */
+.nav__mark {
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 50%;
+  object-fit: cover;
+  mix-blend-mode: multiply;
+  flex: 0 0 auto;
+}
+
+.nav__links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav__links a {
+  font-size: 0.9375rem;
+  color: var(--deep-70);
+  transition: color 0.3s ease;
+}
+
+.nav__links a:hover {
+  color: var(--deep);
+}
+
+.nav__cta--mobile,
+.nav__toggle {
+  display: none;
+}
+
+/* ————— Hero —————————————————————————————————————————————————— */
+
+/* Height is capped as well as floored. On a tall desktop window a pure
+   100svh hero just manufactures emptiness — 52rem is enough to feel
+   full-bleed without the content stranding in the middle of it. */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: min(100svh, 46rem);
+  padding-block: 6.5rem 0;
+  padding-inline: var(--gutter);
+  overflow: hidden;
+}
+
+/* The mark sits behind the type, offset right of centre so the
+   headline's left edge stays clean. */
+.hero__mark {
+  position: absolute;
+  top: 50%;
+  right: max(var(--gutter), 6vw);
+  translate: 0 -50%;
+  width: clamp(20rem, 42vw, 38rem);
+  aspect-ratio: 1;
+  pointer-events: none;
+}
+
+/* Takes every pixel between the nav clearance and the marquee, then
+   centres its own content inside that. Doing it here rather than with
+   justify-content on .hero keeps the marquee out of the centring maths —
+   competing auto margins were splitting the surplus three ways and
+   dumping most of it under the buttons. */
+.hero__inner {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: grid;
+  /* minmax(0, 1fr), not the implicit auto: an auto column sizes to its
+     max-content item, so the title's width: max-content pushed the
+     column past the viewport and .hero's overflow: hidden clipped the
+     headline off-screen on mobile rather than letting it wrap. */
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+}
+
+.hero__eyebrow {
+  margin-bottom: 1.75rem;
+}
+
+/* max-content is the whole point: the heading is exactly as wide as its
+   longest authored line and never re-breaks it. A ch-based cap could not
+   do this — Cormorant's ch is far narrower than its average glyph, so
+   any value big enough to hold the line was also big enough to be
+   useless. Overlapping the breath mark is intended, not a collision. */
+.hero__title {
+  width: max-content;
+  max-width: 100%;
+}
+
+.hero__title .lines__line + .lines__line {
+  color: var(--deep-50);
+}
+
+.hero__sub {
+  max-width: 44ch;
+  margin-top: 1.5rem;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.hero__marquee {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  padding-block: 1.75rem;
+  border-top: 1px solid var(--deep-15);
+}
+
+/* ————— Breath mark ——————————————————————————————————————————— */
+
+.breath {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.breath__svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.breath__ring {
+  fill: none;
+  stroke: var(--clay);
+  stroke-width: 0.5;
+  opacity: 0.55;
+}
+
+.breath__glow {
+  fill: var(--clay);
+  opacity: 0.25;
+  filter: blur(28px);
+}
+
+.breath__label {
+  position: absolute;
+  color: var(--deep-50);
+}
+
+/* ————— Statement ————————————————————————————————————————————— */
+
+.statement {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Sits fully inside the section rather than bleeding — a circle cut off
+   by the viewport edge reads as a mistake, where a rectangle did not.
+   The source is pre-cropped square (see README) so the circle trims only
+   the soft empty corners, not the tree. */
+.statement__art {
+  position: absolute;
+  top: 50%;
+  right: var(--gutter);
+  translate: 0 -50%;
+  width: min(44%, 28rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  object-fit: cover;
+  /* Overrides the global img { max-width: 100% }, which otherwise caps
+     the mobile rule below at the section width and silently ignores it. */
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+.statement__copy {
+  position: relative;
+  z-index: 1;
+}
+
+.statement__title {
+  max-width: 14ch;
+}
+
+.statement__body {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.statement__pull {
+  margin-top: 4rem;
+}
+
+.statement__pull-text {
+  margin-top: 2rem;
+  max-width: 18ch;
+}
+
+/* ————— Breathe (pinned ink scrub) ———————————————————————————— */
+
+/* Ground matches the graded footage (#F1E8DC cream), so the section
+   reads as a cream section with dark ink in it — not as a dark video
+   with type on top. The first pass had it inverted and cream type sat
+   invisible on a cream bloom. */
+.breathe {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--cream);
+}
+
+.breathe__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The bloom starts centre-frame and spreads. This keeps the left column
+   readable as it grows — a cream wash that is opaque under the type and
+   gone by the middle, so it never touches the ink itself. */
+.breathe__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    var(--cream) 0%,
+    rgba(241, 232, 220, 0.92) 26%,
+    rgba(241, 232, 220, 0) 62%
+  );
+}
+
+.breathe__copy {
+  position: relative;
+  height: 100%;
+  display: grid;
+  align-content: center;
+  padding-inline: var(--gutter);
+  will-change: transform, opacity;
+}
+
+.breathe__eyebrow {
+  color: var(--deep-50);
+  margin-bottom: 1.5rem;
+}
+
+/* Deep on cream — 8.6:1. No text-shadow needed once the wash is doing
+   the work, and a shadow would have muddied the serif at this size. */
+.breathe__quote {
+  color: var(--deep);
+  max-width: 20ch;
+}
+
+.breathe__tail {
+  color: var(--deep-50);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No pin, no scrub — the poster frame carries it. */
+  .breathe {
+    height: auto;
+    min-height: 34rem;
+  }
+}
+
+/* ————— Approach —————————————————————————————————————————————— */
+
+.approach__title {
+  margin-top: 1.5rem;
+  max-width: 20ch;
+}
+
+.approach__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(3rem, 8vw, 7rem);
+  margin-top: clamp(3rem, 7vh, 5rem);
+}
+
+/* Sticky so the arc stays in view for the full length of the list —
+   without this it draws off-screen and the effect is invisible. */
+.approach__aside {
+  position: sticky;
+  top: 8rem;
+  align-self: start;
+  display: grid;
+  justify-items: center;
+  gap: 2rem;
+}
+
+.arc {
+  width: min(100%, 18rem);
+  aspect-ratio: 1;
+}
+
+.arc__svg {
+  width: 100%;
+  height: 100%;
+}
+
+.arc__base,
+.arc__path {
+  fill: none;
+  stroke-width: 0.75;
+}
+
+.arc__base {
+  stroke: var(--cream-15);
+}
+
+.arc__path {
+  stroke: var(--clay);
+  stroke-linecap: round;
+}
+
+.approach__caption {
+  text-align: center;
+}
+
+.approach__list {
+  list-style: none;
+  display: grid;
+  gap: clamp(2.5rem, 6vh, 4rem);
+}
+
+.pillar {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  gap: 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--cream-15);
+}
+
+.pillar__n {
+  color: var(--clay);
+}
+
+.pillar__text h3 {
+  margin-bottom: 0.75rem;
+}
+
+/* ————— Work —————————————————————————————————————————————————— */
+
+.work__head {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.work__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: clamp(3rem, 7vh, 4.5rem);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
+  border: 1px solid var(--deep-15);
+  border-radius: var(--radius-lg);
+  background: var(--deep-06);
+  transition:
+    border-color 0.4s ease,
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover {
+  border-color: var(--deep);
+  transform: translateY(-4px);
+}
+
+.card__title {
+  text-wrap: balance;
+}
+
+.card__body {
+  flex: 1;
+}
+
+.card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--deep);
+}
+
+.card__arrow {
+  transition: translate 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover .card__arrow,
+.ebook__inner:hover .card__arrow {
+  translate: 0.35rem 0;
+}
+
+.work__cta {
+  margin-top: 3rem;
+}
+
+/* ————— Course ———————————————————————————————————————————————— */
+
+.course__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+  gap: clamp(3rem, 8vw, 6rem);
+  align-items: start;
+}
+
+.course__title {
+  margin-top: 1.5rem;
+}
+
+.course__sub {
+  margin-top: 1.5rem;
+  max-width: 34ch;
+}
+
+.course__body {
+  margin-top: 1.25rem;
+  max-width: 42ch;
+}
+
+.course__actions {
+  margin-top: 2.5rem;
+}
+
+.course__modules {
+  display: grid;
+}
+
+.module {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: baseline;
+  padding-block: 1.25rem;
+  border-top: 1px solid var(--cream-15);
+}
+
+.module:last-child {
+  border-bottom: 1px solid var(--cream-15);
+}
+
+.module__n {
+  color: var(--clay);
+}
+
+.module__name {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: var(--track);
+  color: var(--cream);
+}
+
+.ebook {
+  margin-top: clamp(4rem, 9vh, 6rem);
+}
+
+.ebook__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-top: 2rem;
+}
+
+.ebook__inner p {
+  margin-top: 0.5rem;
+}
+
+.ebook__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--cream);
+}
+
+/* ————— Podcast ——————————————————————————————————————————————— */
+
+.podcast__inner {
+  text-align: center;
+  display: grid;
+  justify-items: center;
+}
+
+.podcast__title {
+  margin-top: 1.5rem;
+}
+
+.podcast__body {
+  margin-top: 1.5rem;
+  max-width: 46ch;
+}
+
+.podcast__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2.5rem;
+}
+
+/* ————— About ————————————————————————————————————————————————— */
+
+.about__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(3rem, 8vw, 6rem);
+  align-items: start;
+}
+
+.about__portrait {
+  position: sticky;
+  top: 8rem;
+}
+
+/* Holds 4:5 whether the photo resolves or not, so a missing file
+   degrades to the empty frame without shifting the grid. */
+.portrait {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-lg);
+  background: var(--deep-06);
+  border: 1px solid var(--deep-15);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+/* The source is square (2000×2000) and the frame is 4:5, so cover binds
+   on height: the full height shows and ~42px comes off each side, which
+   only takes railing. The vertical value is therefore inert today — it
+   is set top-weighted so a taller replacement photo still crops to the
+   face rather than through it. */
+.portrait__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+.about__ig {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  color: var(--deep);
+  transition: color 0.3s ease;
+}
+
+.about__ig:hover {
+  color: var(--clay);
+}
+
+.about__title {
+  margin-top: 1.5rem;
+}
+
+.about__body {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+/* The bio is five paragraphs of first person. Stepping the opening one
+   up gives the block a way in — without it the whole thing reads as a
+   single undifferentiated wall. */
+.about__body p:first-child {
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+  line-height: 1.5;
+  color: var(--deep);
+}
+
+.about__creds {
+  margin-top: 2.5rem;
+}
+
+.about__creds ul {
+  list-style: none;
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.about__creds li {
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.about__creds li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--clay);
+}
+
+/* ————— Contact ——————————————————————————————————————————————— */
+
+.contact__inner {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.contact__title {
+  max-width: 12ch;
+}
+
+.contact__sub {
+  margin-top: 1.5rem;
+  max-width: 40ch;
+}
+
+.contact__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2.5rem;
+}
+
+.contact__foot {
+  margin-top: clamp(4rem, 10vh, 7rem);
+}
+
+.contact__foot-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 2rem;
+}
+
+.contact__socials {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.contact__socials a {
+  transition: color 0.3s ease;
+}
+
+.contact__socials a:hover {
+  color: var(--cream);
+}
+
+/* ————— Marquee dot ——————————————————————————————————————————— */
+
+.marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3.5rem;
+}
+
+.marquee__dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--clay);
+}
+
+/* ————— Responsive ———————————————————————————————————————————— */
+
+@media (min-width: 60rem) {
+  /* Copy holds the left rather than centring, and is narrowed to clear
+     the circle. A rectangle could be overlapped harmlessly — its left
+     edge was empty — but text crossing a curved edge reads as an
+     accident, so this buys a real gap instead. */
+  .statement__copy {
+    margin-inline: 0;
+    max-width: min(38rem, 54%);
+  }
+}
+
+@media (max-width: 60rem) {
+  /* No room to sit beside the text — it goes behind it, faint. Centred
+     rather than pushed right, so the circle stays a circle. */
+  .statement__art {
+    width: 108%;
+    right: 50%;
+    translate: 50% -50%;
+    opacity: 0.38;
+  }
+
+  .approach__grid,
+  .course__grid,
+  .about__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .approach__aside,
+  .about__portrait {
+    position: static;
+  }
+
+  .about__portrait {
+    max-width: 22rem;
+  }
+
+  .work__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero__mark {
+    width: min(80vw, 26rem);
+    opacity: 0.5;
+  }
+}
+
+@media (max-width: 48rem) {
+  .nav__cta {
+    display: none;
+  }
+
+  .nav__toggle {
+    display: grid;
+    gap: 5px;
+    width: 2rem;
+    padding: 0.5rem 0;
+  }
+
+  .nav__bar {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: var(--deep);
+    transition:
+      translate 0.3s ease,
+      rotate 0.3s ease;
+  }
+
+  .nav__bar--a {
+    translate: 0 3px;
+    rotate: 45deg;
+  }
+
+  .nav__bar--b {
+    translate: 0 -3px;
+    rotate: -45deg;
+  }
+
+  .nav__links {
+    position: fixed;
+    inset: 4.5rem 0 auto 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 2rem var(--gutter) 2.5rem;
+    background: var(--cream);
+    border-bottom: 1px solid var(--deep-15);
+    translate: 0 -110%;
+    transition: translate 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav__links--open {
+    translate: 0;
+  }
+
+  .nav__links a {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    letter-spacing: var(--track);
+    color: var(--deep);
+  }
+
+  .nav__cta--mobile {
+    display: inline-flex;
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+  }
+
+  .pillar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .contact__foot-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

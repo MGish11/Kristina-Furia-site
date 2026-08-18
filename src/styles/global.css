@@ -1,0 +1,325 @@
+/* ─────────────────────────────────────────────────────────────
+   Kristina Furia — design tokens
+
+   Palette and type scale traced from the Velora Wellness Framer
+   template (velora-wellness.framer.website) by measuring its live
+   DOM — see README. Technique and hex values only; no assets, code,
+   copy or layout came across.
+
+   The three things that carry the look:
+     1. Cormorant Garamond at --track: -0.04em, every display size
+     2. deep green on warm cream, alternating whole sections
+     3. the breath — one 4/2/6 cycle that paces every motion here
+
+   The breath is ours, not the reference's. It is the reason this
+   site exists rather than another calm wellness page.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --cream: #f1e8dc; /* page ground */
+  --deep: #31473a; /* display type, inverted sections */
+  --clay: #b9846a; /* the single accent — breath ring, numerals */
+
+  --deep-70: rgba(49, 71, 58, 0.7); /* body copy on cream */
+  --deep-50: rgba(49, 71, 58, 0.5); /* muted / meta */
+  --deep-15: rgba(49, 71, 58, 0.15); /* hairlines */
+  --deep-06: rgba(49, 71, 58, 0.06); /* faint fills */
+
+  --cream-70: rgba(241, 232, 220, 0.7); /* body copy on deep */
+  --cream-50: rgba(241, 232, 220, 0.5);
+  --cream-15: rgba(241, 232, 220, 0.15);
+
+  --font-display: 'Cormorant Garamond Variable', 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* The signature. Measured at -1.92px on 48px across the reference. */
+  --track: -0.04em;
+
+  --radius: 4px;
+  --radius-lg: 8px;
+
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --stack: clamp(5rem, 11vh, 9rem); /* vertical rhythm between sections */
+  --maxw: 78rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: var(--cream);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--deep-70);
+  background: var(--cream);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--deep);
+  color: var(--cream);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--clay);
+  outline-offset: 3px;
+}
+
+/* ————— Type scale ————————————————————————————————————————————
+   Measured off the reference at 1440w (90/72/68/48/40/28/20/16/12)
+   and expressed as clamp() so it holds to mobile. Display line-height
+   sits at 0.95–1.0 — the serif needs the tightness to read as one mass.
+   ─────────────────────────────────────────────────────────── */
+
+.t-display {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6.25vw, 5.625rem); /* 90px @ 1440 */
+  line-height: 0.95;
+  font-weight: 400;
+  letter-spacing: var(--track);
+  color: var(--deep);
+}
+
+.t-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 4.7vw, 4.25rem); /* 68px */
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: var(--track);
+  color: var(--deep);
+}
+
+.t-h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.33vw, 3rem); /* 48px */
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: var(--track);
+  color: var(--deep);
+}
+
+.t-h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 1.95vw, 1.75rem); /* 28px */
+  line-height: 1.1;
+  font-weight: 400;
+  letter-spacing: var(--track);
+  color: var(--deep);
+}
+
+.t-lead {
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem); /* 20px */
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--deep-70);
+  text-wrap: pretty;
+}
+
+.t-body {
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--deep-70);
+  text-wrap: pretty;
+}
+
+/* The only place tracking goes positive. Small caps need the air. */
+.t-label {
+  font-size: 0.75rem; /* 12px */
+  line-height: 1.4;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--deep-50);
+}
+
+/* Section colour inversion. Everything above re-points on deep. */
+.section--deep {
+  background: var(--deep);
+  color: var(--cream-70);
+}
+
+.section--deep .t-display,
+.section--deep .t-h1,
+.section--deep .t-h2,
+.section--deep .t-h3 {
+  color: var(--cream);
+}
+
+.section--deep .t-lead,
+.section--deep .t-body {
+  color: var(--cream-70);
+}
+
+.section--deep .t-label {
+  color: var(--cream-50);
+}
+
+/* ————— Layout primitives ————————————————————————————————————— */
+
+.section {
+  padding-block: var(--stack);
+  padding-inline: var(--gutter);
+}
+
+.wrap {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  width: 100%;
+}
+
+.wrap--narrow {
+  max-width: 46rem;
+}
+
+.rule {
+  height: 1px;
+  background: var(--deep-15);
+  border: 0;
+}
+
+.section--deep .rule {
+  background: var(--cream-15);
+}
+
+/* ————— Buttons ——————————————————————————————————————————————— */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.6rem;
+  border-radius: var(--radius);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.btn--solid {
+  background: var(--deep);
+  color: var(--cream);
+}
+
+.btn--solid:hover {
+  background: var(--clay);
+}
+
+.btn--ghost {
+  border: 1px solid var(--deep-15);
+  color: var(--deep);
+}
+
+.btn--ghost:hover {
+  border-color: var(--deep);
+}
+
+.section--deep .btn--solid {
+  background: var(--cream);
+  color: var(--deep);
+}
+
+.section--deep .btn--solid:hover {
+  background: var(--clay);
+  color: var(--cream);
+}
+
+.section--deep .btn--ghost {
+  border-color: var(--cream-15);
+  color: var(--cream);
+}
+
+.section--deep .btn--ghost:hover {
+  border-color: var(--cream);
+}
+
+/* ————— Reveal (appear-on-scroll) ————————————————————————————— */
+
+.reveal {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Per-line mask. Each line sits in a clipped box and rises into it. */
+.lines__line {
+  display: block;
+  overflow: hidden;
+}
+
+.lines__inner {
+  display: block;
+  will-change: transform;
+}
+
+/* ————— Marquee ——————————————————————————————————————————————— */
+
+.marquee {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  user-select: none;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 3.5rem;
+  padding-right: 3.5rem;
+  will-change: transform;
+}
+
+.marquee__item {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* ————— Motion preferences ———————————————————————————————————— */
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .lines__inner {
+    transform: none !important;
+  }
+
+  .marquee__track {
+    transform: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}

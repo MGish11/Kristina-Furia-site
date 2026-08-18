@@ -1,0 +1,14 @@
+node_modules/
+dist/
+*.local
+.DS_Store
+Thumbs.db
+
+# Scratch frames from grading/crop tuning — regenerate with the ffmpeg
+# one-liners in the README when re-tuning. Not worth versioning.
+media/frames/
+
+# The 1080p Higgsfield roll, superseded by the 4K master. Kept locally
+# for reference only; breathe-4k-source.mp4 is the one the encode
+# script actually reads.
+media/breathe-source.mp4
