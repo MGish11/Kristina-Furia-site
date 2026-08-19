@@ -7,10 +7,20 @@
  * sign-off before launch.
  */
 
+/**
+ * Public-dir asset URL.
+ *
+ * Vite rewrites absolute asset paths in HTML and CSS to sit under `base`,
+ * but it leaves string literals in JS alone — asset('mark.webp') would keep
+ * pointing at the domain root and 404 on the project Pages site. BASE_URL
+ * carries a trailing slash, so paths here are written without a leading one.
+ */
+const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`
+
 export const NAV = {
   name: 'Kristina Furia',
   /** Square crop of the botanical illustration, used as the wordmark. */
-  mark: '/mark.webp',
+  mark: asset('mark.webp'),
   links: [
     { label: 'Approach', href: '#approach' },
     { label: 'Work With Me', href: '#work' },
@@ -60,7 +70,7 @@ export const STATEMENT = {
    * Decorative only — the section reads identically without it, so it
    * carries an empty alt and is hidden from assistive tech.
    */
-  art: '/botanical-round.webp',
+  art: asset('botanical-round.webp'),
 }
 
 export const BREATHE = {
@@ -78,10 +88,10 @@ export const BREATHE = {
   /** HERS — the second half of the same caption. */
   tail: 'Then your job becomes to heal it.',
   /** Poster frame, and the reduced-motion / no-JS fallback image. */
-  poster: '/breathe-poster.jpg',
-  video: '/breathe.mp4',
+  poster: asset('breathe-poster.jpg'),
+  video: asset('breathe.mp4'),
   /** 720p cut. A phone decoder seeking 1080p all-intra falls behind. */
-  videoMobile: '/breathe-mobile.mp4',
+  videoMobile: asset('breathe-mobile.mp4'),
 }
 
 export const APPROACH = {
@@ -197,7 +207,7 @@ export const ABOUT = {
    * 404s quietly instead of failing the build, so the placeholder frame
    * still holds the layout if the photo has not been dropped in yet.
    */
-  portrait: '/kristina-portrait.webp',
+  portrait: asset('kristina-portrait.webp'),
   portraitAlt: 'Kristina Furia sitting on weathered wooden steps at the beach',
   /**
    * HERS — lifted from her own first line rather than written for the
